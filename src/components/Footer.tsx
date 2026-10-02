@@ -13,26 +13,6 @@ export const Footer: React.FC<FooterProps> = ({ setActivePage, openProposal }) =
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleDownloadZip = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    try {
-      const res = await fetch('/safarilax-website.zip');
-      const blob = await res.blob();
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', 'safarilax-website.zip');
-      document.body.appendChild(link);
-      link.click();
-      setTimeout(() => {
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
-      }, 1500);
-    } catch {
-      window.location.href = '/safarilax-website.zip';
-    }
-  };
-
   const handleNav = (id: PageId) => {
     setActivePage(id);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -42,11 +22,11 @@ export const Footer: React.FC<FooterProps> = ({ setActivePage, openProposal }) =
     <footer className="bg-[#0a0908] text-[#FAF8F5] border-t border-[#1f1d19] pt-20 pb-12">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
         
-        {/* Brand Card Replica / Multilingual Signature Block (from brand identity document) */}
+        {/* Brand Card Replica */}
         <div className="bg-[#141311] border border-[#24221d] p-8 md:p-12 mb-16 relative overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             
-            {/* Left Box: Ecru / Linen Brand Card Seal */}
+            {/* Ecru / Linen Brand Card Seal */}
             <div className="lg:col-span-4 flex justify-center lg:justify-start">
               <div className="bg-[#f5f2eb] text-[#0e0d0b] p-7 md:p-9 text-center shadow-xl w-64 max-w-full border border-[#ded7c8]">
                 <div className="font-serif tracking-[0.35em] text-xs font-medium text-[#3c3933] uppercase">
@@ -62,10 +42,10 @@ export const Footer: React.FC<FooterProps> = ({ setActivePage, openProposal }) =
               </div>
             </div>
 
-            {/* Right: Signature and Direct Service Lines */}
+            {/* Signature & Direct Service Lines */}
             <div className="lg:col-span-8 space-y-4">
               <p className="font-serif italic text-sm md:text-base text-[#c5a880]/90 tracking-wide leading-relaxed">
-                {BRAND.multilingualSignoffs.join('  ¬∑  ')}
+                {BRAND.multilingualSignoffs.join('  ∑  ')}
               </p>
               
               <div className="space-y-1">
@@ -106,10 +86,8 @@ export const Footer: React.FC<FooterProps> = ({ setActivePage, openProposal }) =
           </div>
         </div>
 
-        {/* Navigation & Detailed Columns */}
+        {/* Navigation & Columns */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-16 border-b border-[#1c1b18]">
-          
-          {/* Column 1: Brand Ethos */}
           <div className="space-y-4">
             <h5 className="font-serif tracking-[0.2em] text-sm text-[#FAF8F5] uppercase">
               SAFARI LAX
@@ -118,11 +96,10 @@ export const Footer: React.FC<FooterProps> = ({ setActivePage, openProposal }) =
               Specialising in private, tailor-made journeys in Kenya and across Africa. Unhurried itineraries, private wildlife concessions, and dedicated aerial charter aviation.
             </p>
             <p className="text-xs text-[#c5a880] italic font-serif">
-              ‚ÄúPrivate Africa, Unhurried.‚Äù
+              ìPrivate Africa, Unhurried.î
             </p>
           </div>
 
-          {/* Column 2: Navigation Links */}
           <div className="space-y-4">
             <h5 className="font-serif tracking-[0.2em] text-sm text-[#FAF8F5] uppercase">
               Curated Pages
@@ -141,7 +118,6 @@ export const Footer: React.FC<FooterProps> = ({ setActivePage, openProposal }) =
             </ul>
           </div>
 
-          {/* Column 3: Private Enclave Presence */}
           <div className="space-y-4">
             <h5 className="font-serif tracking-[0.2em] text-sm text-[#FAF8F5] uppercase">
               Operations & Concierge
@@ -162,7 +138,6 @@ export const Footer: React.FC<FooterProps> = ({ setActivePage, openProposal }) =
             </div>
           </div>
 
-          {/* Column 4: Client Technical Setup & Handover */}
           <div className="space-y-4">
             <h5 className="font-serif tracking-[0.2em] text-sm text-[#FAF8F5] uppercase">
               Client Brief & Handover
@@ -174,30 +149,24 @@ export const Footer: React.FC<FooterProps> = ({ setActivePage, openProposal }) =
               onClick={openProposal}
               className="text-xs uppercase tracking-wider text-[#c5a880] hover:text-[#FAF8F5] underline underline-offset-4 transition-colors"
             >
-              Open Technical Proposal & Handover ‚Üí
+              Open Technical Proposal & Handover ?
             </button>
           </div>
         </div>
 
-        {/* Bottom Bar: Copyright, Designer Credit & Back to Top */}
+        {/* Clean Luxury Bottom Bar */}
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between text-xs text-[#78746c] gap-4">
           <div className="flex flex-col sm:flex-row items-center sm:items-baseline gap-2 sm:gap-4 text-center sm:text-left">
             <p>
-              ¬© {new Date().getFullYear()} Safari LAX. All rights reserved. Registered under {BRAND.domain}.
+              © {new Date().getFullYear()} Safari LAX. All rights reserved. Registered under {BRAND.domain}.
             </p>
-            <span className="hidden sm:inline text-[#3a372f]">¬∑</span>
+            <span className="hidden sm:inline text-[#3a372f]">∑</span>
             <p className="text-[#c5a880] font-medium tracking-wide">
               Designed by Kiprop Yego, 2026
             </p>
           </div>
 
           <div className="flex items-center gap-6">
-            <button
-              onClick={handleDownloadZip}
-              className="text-emerald-400 hover:text-emerald-300 font-medium transition-colors flex items-center gap-1 cursor-pointer"
-            >
-              <span>Download ZIP</span>
-            </button>
             <button
               onClick={openProposal}
               className="hover:text-[#c5a880] transition-colors"
