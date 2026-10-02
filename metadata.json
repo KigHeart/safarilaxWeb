@@ -1,0 +1,6 @@
+{
+  "name": "Safari LAX - Private Africa, Unhurried",
+  "description": "High-end bespoke travel and private tailor-made safari journeys in Kenya and across Africa. Unhurried wildlife expeditions, exclusive bush camps, and private charter aviation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
