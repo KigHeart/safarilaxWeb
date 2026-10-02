@@ -21,11 +21,11 @@ export const Footer: React.FC<FooterProps> = ({ setActivePage }) => {
     <footer className="bg-[#0a0908] text-[#FAF8F5] border-t border-[#1f1d19] pt-20 pb-12">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
         
-        {/* Brand Card Replica / Multilingual Signature Block */}
+        {/* Brand Card Replica */}
         <div className="bg-[#141311] border border-[#24221d] p-8 md:p-12 mb-16 relative overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             
-            {/* Left Box: Ecru / Linen Brand Card Seal */}
+            {/* Ecru Seal */}
             <div className="lg:col-span-4 flex justify-center lg:justify-start">
               <div className="bg-[#f5f2eb] text-[#0e0d0b] p-7 md:p-9 text-center shadow-xl w-64 max-w-full border border-[#ded7c8]">
                 <div className="font-serif tracking-[0.35em] text-xs font-medium text-[#3c3933] uppercase">
@@ -41,10 +41,10 @@ export const Footer: React.FC<FooterProps> = ({ setActivePage }) => {
               </div>
             </div>
 
-            {/* Right: Signature and Direct Service Lines */}
+            {/* Direct Lines */}
             <div className="lg:col-span-8 space-y-4">
               <p className="font-serif italic text-sm md:text-base text-[#c5a880]/90 tracking-wide leading-relaxed">
-                {BRAND.multilingualSignoffs.join('  ∑  ')}
+                {BRAND.multilingualSignoffs.join('  ¬∑  ')}
               </p>
               
               <div className="space-y-1">
@@ -85,10 +85,8 @@ export const Footer: React.FC<FooterProps> = ({ setActivePage }) => {
           </div>
         </div>
 
-        {/* Clean 3 Columns: Pure Safari Content */}
+        {/* 3 Balanced Columns */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 pb-16 border-b border-[#1c1b18]">
-          
-          {/* Column 1: Brand Ethos */}
           <div className="space-y-4">
             <h5 className="font-serif tracking-[0.2em] text-sm text-[#FAF8F5] uppercase">
               SAFARI LAX
@@ -97,11 +95,10 @@ export const Footer: React.FC<FooterProps> = ({ setActivePage }) => {
               Specialising in private, tailor-made journeys in Kenya and across Africa. Unhurried itineraries, private wildlife concessions, and dedicated aerial charter aviation.
             </p>
             <p className="text-xs text-[#c5a880] italic font-serif">
-              ìPrivate Africa, Unhurried.î
+              ‚ÄúPrivate Africa, Unhurried.‚Äù
             </p>
           </div>
 
-          {/* Column 2: Navigation Links */}
           <div className="space-y-4">
             <h5 className="font-serif tracking-[0.2em] text-sm text-[#FAF8F5] uppercase">
               Curated Pages
@@ -120,7 +117,6 @@ export const Footer: React.FC<FooterProps> = ({ setActivePage }) => {
             </ul>
           </div>
 
-          {/* Column 3: Operations & Concierge */}
           <div className="space-y-4">
             <h5 className="font-serif tracking-[0.2em] text-sm text-[#FAF8F5] uppercase">
               Operations & Concierge
@@ -146,9 +142,9 @@ export const Footer: React.FC<FooterProps> = ({ setActivePage }) => {
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between text-xs text-[#78746c] gap-4">
           <div className="flex flex-col sm:flex-row items-center sm:items-baseline gap-2 sm:gap-4 text-center sm:text-left">
             <p>
-              © {new Date().getFullYear()} Safari LAX. All rights reserved.
+              ¬© {new Date().getFullYear()} Safari LAX. All rights reserved.
             </p>
-            <span className="hidden sm:inline text-[#3a372f]">∑</span>
+            <span className="hidden sm:inline text-[#3a372f]">¬∑</span>
             <p className="text-[#c5a880] font-medium tracking-wide">
               Designed by Kiprop Yego, 2026
             </p>
