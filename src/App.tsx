@@ -15,17 +15,14 @@ import { GalleryView } from './components/GalleryView';
 import { ContactView } from './components/ContactView';
 import { JourneyModal } from './components/JourneyModal';
 import { GalleryModal } from './components/GalleryModal';
-import { TechnicalProposalModal } from './components/TechnicalProposalModal';
 import { GALLERY_ITEMS } from './data/gallery';
 
 export default function App() {
   const [activePage, setActivePage] = useState<PageId>('home');
   const [selectedJourney, setSelectedJourney] = useState<Journey | null>(null);
   const [selectedGalleryImage, setSelectedGalleryImage] = useState<GalleryImage | null>(null);
-  const [isProposalOpen, setIsProposalOpen] = useState(false);
   const [contactInitialJourney, setContactInitialJourney] = useState<string>('');
 
-  // Handle URL hash or direct deep linking if needed
   useEffect(() => {
     const handleHash = () => {
       const hash = window.location.hash.replace('#', '') as PageId;
@@ -57,11 +54,10 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#0e0d0b] text-[#FAF8F5] flex flex-col font-sans selection:bg-[#c5a880]/30 selection:text-[#FAF8F5]">
       
-      {/* Universal Top Navigation Contract */}
+      {/* Universal Top Navigation */}
       <Header
         activePage={activePage}
         setActivePage={handlePageChange}
-        openProposal={() => setIsProposalOpen(true)}
       />
 
       {/* Main View Area */}
@@ -70,7 +66,6 @@ export default function App() {
           <HomeView
             setActivePage={handlePageChange}
             onOpenJourney={handleOpenJourney}
-            openProposal={() => setIsProposalOpen(true)}
           />
         )}
 
@@ -99,15 +94,13 @@ export default function App() {
         {activePage === 'contact' && (
           <ContactView
             initialJourneyTitle={contactInitialJourney}
-            openProposal={() => setIsProposalOpen(true)}
           />
         )}
       </main>
 
-      {/* Universal Quiet Brand Signature Footer */}
+      {/* Clean 3-Column Luxury Footer */}
       <Footer
         setActivePage={handlePageChange}
-        openProposal={() => setIsProposalOpen(true)}
       />
 
       {/* Journey Detail Modal */}
@@ -123,12 +116,6 @@ export default function App() {
         allImages={GALLERY_ITEMS}
         onClose={() => setSelectedGalleryImage(null)}
         onSelectImage={(img) => setSelectedGalleryImage(img)}
-      />
-
-      {/* Technical Proposal, Namecheap DNS & WordPress Handover Modal */}
-      <TechnicalProposalModal
-        isOpen={isProposalOpen}
-        onClose={() => setIsProposalOpen(false)}
       />
 
     </div>

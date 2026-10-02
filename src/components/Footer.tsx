@@ -5,10 +5,9 @@ import { ArrowUp, Mail, Phone, MapPin, Globe, Shield } from 'lucide-react';
 
 interface FooterProps {
   setActivePage: (page: PageId) => void;
-  openProposal: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ setActivePage, openProposal }) => {
+export const Footer: React.FC<FooterProps> = ({ setActivePage }) => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -22,11 +21,11 @@ export const Footer: React.FC<FooterProps> = ({ setActivePage, openProposal }) =
     <footer className="bg-[#0a0908] text-[#FAF8F5] border-t border-[#1f1d19] pt-20 pb-12">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
         
-        {/* Brand Card Replica */}
+        {/* Brand Card Replica / Multilingual Signature Block */}
         <div className="bg-[#141311] border border-[#24221d] p-8 md:p-12 mb-16 relative overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             
-            {/* Ecru / Linen Brand Card Seal */}
+            {/* Left Box: Ecru / Linen Brand Card Seal */}
             <div className="lg:col-span-4 flex justify-center lg:justify-start">
               <div className="bg-[#f5f2eb] text-[#0e0d0b] p-7 md:p-9 text-center shadow-xl w-64 max-w-full border border-[#ded7c8]">
                 <div className="font-serif tracking-[0.35em] text-xs font-medium text-[#3c3933] uppercase">
@@ -42,7 +41,7 @@ export const Footer: React.FC<FooterProps> = ({ setActivePage, openProposal }) =
               </div>
             </div>
 
-            {/* Signature & Direct Service Lines */}
+            {/* Right: Signature and Direct Service Lines */}
             <div className="lg:col-span-8 space-y-4">
               <p className="font-serif italic text-sm md:text-base text-[#c5a880]/90 tracking-wide leading-relaxed">
                 {BRAND.multilingualSignoffs.join('  ·  ')}
@@ -86,8 +85,10 @@ export const Footer: React.FC<FooterProps> = ({ setActivePage, openProposal }) =
           </div>
         </div>
 
-        {/* Navigation & Columns */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-16 border-b border-[#1c1b18]">
+        {/* Clean 3 Columns: Pure Safari Content */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 pb-16 border-b border-[#1c1b18]">
+          
+          {/* Column 1: Brand Ethos */}
           <div className="space-y-4">
             <h5 className="font-serif tracking-[0.2em] text-sm text-[#FAF8F5] uppercase">
               SAFARI LAX
@@ -100,6 +101,7 @@ export const Footer: React.FC<FooterProps> = ({ setActivePage, openProposal }) =
             </p>
           </div>
 
+          {/* Column 2: Navigation Links */}
           <div className="space-y-4">
             <h5 className="font-serif tracking-[0.2em] text-sm text-[#FAF8F5] uppercase">
               Curated Pages
@@ -109,7 +111,7 @@ export const Footer: React.FC<FooterProps> = ({ setActivePage, openProposal }) =
                 <li key={page}>
                   <button
                     onClick={() => handleNav(page)}
-                    className="hover:text-[#c5a880] transition-colors uppercase tracking-[0.16em] capitalize text-left"
+                    className="hover:text-[#c5a880] transition-colors uppercase tracking-[0.16em] capitalize text-left cursor-pointer"
                   >
                     {page}
                   </button>
@@ -118,6 +120,7 @@ export const Footer: React.FC<FooterProps> = ({ setActivePage, openProposal }) =
             </ul>
           </div>
 
+          {/* Column 3: Operations & Concierge */}
           <div className="space-y-4">
             <h5 className="font-serif tracking-[0.2em] text-sm text-[#FAF8F5] uppercase">
               Operations & Concierge
@@ -129,7 +132,7 @@ export const Footer: React.FC<FooterProps> = ({ setActivePage, openProposal }) =
               </div>
               <div className="flex items-start gap-2">
                 <Globe className="w-4 h-4 text-[#c5a880] shrink-0 mt-0.5" />
-                <span>Domain: {BRAND.domain} (Namecheap Registered)</span>
+                <span>{BRAND.domain}</span>
               </div>
               <div className="flex items-start gap-2">
                 <Shield className="w-4 h-4 text-[#c5a880] shrink-0 mt-0.5" />
@@ -137,28 +140,13 @@ export const Footer: React.FC<FooterProps> = ({ setActivePage, openProposal }) =
               </div>
             </div>
           </div>
-
-          <div className="space-y-4">
-            <h5 className="font-serif tracking-[0.2em] text-sm text-[#FAF8F5] uppercase">
-              Client Brief & Handover
-            </h5>
-            <p className="text-xs text-[#8e8a80] leading-relaxed">
-              Review our complete Namecheap DNS email preservation guide, WordPress content update roadmap, and timeline fee proposal.
-            </p>
-            <button
-              onClick={openProposal}
-              className="text-xs uppercase tracking-wider text-[#c5a880] hover:text-[#FAF8F5] underline underline-offset-4 transition-colors"
-            >
-              Open Technical Proposal & Handover ?
-            </button>
-          </div>
         </div>
 
         {/* Clean Luxury Bottom Bar */}
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between text-xs text-[#78746c] gap-4">
           <div className="flex flex-col sm:flex-row items-center sm:items-baseline gap-2 sm:gap-4 text-center sm:text-left">
             <p>
-              © {new Date().getFullYear()} Safari LAX. All rights reserved. Registered under {BRAND.domain}.
+              © {new Date().getFullYear()} Safari LAX. All rights reserved.
             </p>
             <span className="hidden sm:inline text-[#3a372f]">·</span>
             <p className="text-[#c5a880] font-medium tracking-wide">
@@ -168,14 +156,14 @@ export const Footer: React.FC<FooterProps> = ({ setActivePage, openProposal }) =
 
           <div className="flex items-center gap-6">
             <button
-              onClick={openProposal}
-              className="hover:text-[#c5a880] transition-colors"
+              onClick={() => handleNav('contact')}
+              className="hover:text-[#c5a880] transition-colors uppercase tracking-wider text-[11px]"
             >
-              Namecheap DNS & Email Setup
+              Private Enquiry
             </button>
             <button
               onClick={scrollToTop}
-              className="flex items-center gap-1 hover:text-[#FAF8F5] transition-colors"
+              className="flex items-center gap-1 hover:text-[#FAF8F5] transition-colors cursor-pointer"
               aria-label="Scroll back to top"
             >
               <span>Back to Top</span>
