@@ -3,35 +3,38 @@
 @theme {
   --font-serif: "Cormorant Garamond", Georgia, serif;
   --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
-  --color-sand-50: #faf8f5;
-  --color-sand-100: #f5f2eb;
-  --color-sand-200: #ebe6dc;
-  --color-sand-300: #ded7c8;
-  --color-gold-300: #d4b896;
+  --color-sand-50: #fcfbf9;
+  --color-sand-100: #faf8f5;
+  --color-sand-200: #f3efe6;
+  --color-sand-300: #e8e2d5;
+  --color-sand-400: #d6ccba;
+  --color-gold-300: #dfc8a2;
   --color-gold-400: #c5a880;
   --color-gold-500: #b08f65;
-  --color-savannah-900: #141311;
-  --color-savannah-950: #0e0d0b;
+  --color-gold-600: #997449;
+  --color-savannah-800: #262420;
+  --color-savannah-900: #1c1a17;
+  --color-savannah-950: #0f0e0c;
 }
 
 html {
   scroll-behavior: smooth;
   font-family: var(--font-sans);
+  background-color: #faf8f5;
+  color: #1c1a17;
 }
 
-/* Custom delicate scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0e0d0b;
+  background: #f3efe6;
 }
 ::-webkit-scrollbar-thumb {
-  background: #2a2824;
+  background: #d6ccba;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #c5a880;
 }
-

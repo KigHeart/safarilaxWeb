@@ -1,24 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { PageId } from '../types';
-import { BRAND } from '../data/brand';
 import { Menu, X } from 'lucide-react';
 
 interface HeaderProps {
   activePage: PageId;
   setActivePage: (page: PageId) => void;
-  openProposal: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({
-  activePage,
-  setActivePage
-}) => {
+export const Header: React.FC<HeaderProps> = ({ activePage, setActivePage }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 30);
+      setScrolled(window.scrollY > 40);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
@@ -26,11 +21,11 @@ export const Header: React.FC<HeaderProps> = ({
 
   const navItems: { id: PageId; label: string }[] = [
     { id: 'home', label: 'Home' },
-    { id: 'about', label: 'About' },
+    { id: 'about', label: 'Our Story' },
     { id: 'journeys', label: 'Journeys' },
-    { id: 'services', label: 'Services' },
+    { id: 'services', label: 'Expeditions' },
     { id: 'gallery', label: 'Gallery' },
-    { id: 'contact', label: 'Contact' },
+    { id: 'contact', label: 'Enquiry' },
   ];
 
   const handleNavClick = (id: PageId) => {
@@ -39,71 +34,85 @@ export const Header: React.FC<HeaderProps> = ({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const isLightHeader = scrolled;
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'bg-[#0e0d0b]/90 backdrop-blur-md border-b border-[#262420] py-3.5'
-          : 'bg-gradient-to-b from-[#0e0d0b]/90 via-[#0e0d0b]/60 to-transparent py-5'
+        isLightHeader
+          ? 'bg-[#faf8f5]/95 backdrop-blur-md border-b border-[#e8e2d5] py-3.5 shadow-xs'
+          : 'bg-gradient-to-b from-black/80 via-black/40 to-transparent py-5'
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between">
-        {/* Brand Wordmark */}
         <button
           onClick={() => handleNavClick('home')}
-          className="text-left group cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-[#c5a880]"
+          className="text-left group cursor-pointer focus:outline-none"
           aria-label="Safari LAX - Home"
         >
-          <span className="font-serif tracking-[0.28em] text-lg md:text-xl font-medium text-[#FAF8F5] group-hover:text-[#c5a880] transition-colors uppercase">
+          <span
+            className={`font-serif tracking-[0.32em] text-lg md:text-xl font-medium uppercase transition-colors ${
+              isLightHeader ? 'text-[#1c1a17] group-hover:text-[#997449]' : 'text-white group-hover:text-[#dfc8a2]'
+            }`}
+          >
             SAFARI LAX
           </span>
         </button>
 
-        {/* Clean Editorial Nav Links */}
-        <nav className="hidden lg:flex items-center gap-8" aria-label="Main Navigation">
+        <nav className="hidden lg:flex items-center gap-9" aria-label="Main Navigation">
           {navItems.map((item) => {
             const isActive = activePage === item.id;
             return (
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
-                className={`text-xs uppercase tracking-[0.2em] font-medium transition-all relative py-1 focus:outline-none focus-visible:text-[#c5a880] ${
+                className={`text-xs uppercase tracking-[0.22em] font-medium transition-all relative py-1 focus:outline-none cursor-pointer ${
                   isActive
-                    ? 'text-[#c5a880]'
-                    : 'text-[#FAF8F5]/80 hover:text-[#FAF8F5]'
+                    ? isLightHeader ? 'text-[#997449]' : 'text-[#dfc8a2]'
+                    : isLightHeader
+                      ? 'text-[#5c564c] hover:text-[#1c1a17]'
+                      : 'text-white/85 hover:text-white'
                 }`}
               >
                 {item.label}
                 {isActive && (
-                  <span className="absolute bottom-0 left-0 w-full h-[1px] bg-[#c5a880]" />
+                  <span
+                    className={`absolute bottom-0 left-0 w-full h-[1.5px] ${
+                      isLightHeader ? 'bg-[#997449]' : 'bg-[#dfc8a2]'
+                    }`}
+                  />
                 )}
               </button>
             );
           })}
         </nav>
 
-        {/* Primary Luxury CTA */}
-        <div className="hidden lg:flex items-center gap-3">
+        <div className="hidden lg:flex items-center gap-4">
           <button
             onClick={() => handleNavClick('contact')}
-            className="text-xs uppercase tracking-[0.2em] font-medium py-2.5 px-5 bg-[#c5a880] text-[#0e0d0b] hover:bg-[#d4b896] transition-colors whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-[#c5a880] cursor-pointer"
+            className={`text-xs uppercase tracking-[0.22em] font-medium py-2.5 px-6 transition-all duration-200 cursor-pointer ${
+              isLightHeader
+                ? 'bg-[#1c1a17] text-[#faf8f5] hover:bg-[#997449]'
+                : 'bg-[#c5a880] text-[#0f0e0c] hover:bg-[#dfc8a2]'
+            }`}
           >
-            Private Enquiry
+            Plan Your Journey
           </button>
         </div>
 
-        {/* Mobile Nav Toggle */}
-        <div className="flex items-center gap-2.5 lg:hidden">
+        <div className="flex items-center gap-3 lg:hidden">
           <button
             onClick={() => handleNavClick('contact')}
-            className="text-[11px] uppercase tracking-[0.16em] font-medium py-1.5 px-3 bg-[#c5a880] text-[#0e0d0b] hover:bg-[#d4b896] transition-colors"
+            className={`text-[11px] uppercase tracking-[0.18em] font-medium py-1.5 px-3 transition-colors ${
+              isLightHeader ? 'bg-[#1c1a17] text-[#faf8f5]' : 'bg-[#c5a880] text-[#0f0e0c]'
+            }`}
           >
             Enquire
           </button>
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 text-[#FAF8F5] focus:outline-none focus-visible:ring-1 focus-visible:ring-[#c5a880]"
+            className={`p-1.5 focus:outline-none cursor-pointer ${isLightHeader ? 'text-[#1c1a17]' : 'text-white'}`}
             aria-expanded={mobileMenuOpen}
             aria-label="Toggle navigation menu"
           >
@@ -112,18 +121,17 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
       </div>
 
-      {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-[#0e0d0b] border-b border-[#262420] px-6 py-6 space-y-4 animate-in fade-in duration-200">
-          <nav className="flex flex-col space-y-3" aria-label="Mobile Navigation">
+        <div className="lg:hidden bg-[#faf8f5] border-b border-[#e8e2d5] px-6 py-6 space-y-4 animate-in fade-in duration-150 shadow-xl text-[#1c1a17]">
+          <nav className="flex flex-col space-y-2" aria-label="Mobile Navigation">
             {navItems.map((item) => {
               const isActive = activePage === item.id;
               return (
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`text-left text-sm uppercase tracking-[0.22em] font-medium py-2.5 border-b border-[#1c1b18] ${
-                    isActive ? 'text-[#c5a880]' : 'text-[#FAF8F5]/80'
+                  className={`text-left text-sm uppercase tracking-[0.22em] font-medium py-2.5 border-b border-[#f0eae0] ${
+                    isActive ? 'text-[#997449]' : 'text-[#5c564c]'
                   }`}
                 >
                   {item.label}
@@ -131,15 +139,12 @@ export const Header: React.FC<HeaderProps> = ({
               );
             })}
           </nav>
-
-          <div className="pt-3">
+          <div className="pt-2">
             <button
-              onClick={() => {
-                handleNavClick('contact');
-              }}
-              className="w-full text-center text-xs uppercase tracking-[0.2em] font-medium py-3 bg-[#c5a880] text-[#0e0d0b]"
+              onClick={() => handleNavClick('contact')}
+              className="w-full text-center text-xs uppercase tracking-[0.22em] font-medium py-3.5 bg-[#1c1a17] text-[#faf8f5] hover:bg-[#997449] transition-colors"
             >
-              Private Enquiry
+              Plan Your Journey
             </button>
           </div>
         </div>
