@@ -62,7 +62,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenEnquiry }) => 
         </div>
       </div>
 
-      {/* Contacts, Accreditation & Signature */}
+      {/* Contacts & Copyright */}
       <div className="border-t border-white/10 py-8 px-6">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-[10.5px] tracking-[0.22em] text-[#B8B3AA] uppercase font-light text-center md:text-left">
           <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-5 gap-y-2">
@@ -91,11 +91,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenEnquiry }) => 
           </div>
 
           <div className="flex flex-col sm:flex-row items-center gap-3 text-[#B8B3AA]/80">
-            <span>© 2026 SAFARI LAX</span>
-            <span className="hidden sm:inline">·</span>
-            <span className="text-[#F7F4EC] tracking-[0.25em] font-medium">
-              DESIGNED BY KIPROP ARAP YEGO
-            </span>
+            <span>© 2023 SAFARI LAX</span>
           </div>
         </div>
       </div>
