@@ -1,152 +1,137 @@
-import React, { useState, useEffect } from 'react';
-import { PageId } from '../types';
+import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 
 interface HeaderProps {
-  activePage: PageId;
-  setActivePage: (page: PageId) => void;
+  onNavigate: (sectionId: string) => void;
+  onOpenEnquiry: () => void;
+  onOpenConcierge?: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ activePage, setActivePage }) => {
+export const Header: React.FC<HeaderProps> = ({
+  onNavigate,
+  onOpenEnquiry,
+  onOpenConcierge
+}) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 40);
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const navItems: { id: PageId; label: string }[] = [
-    { id: 'home', label: 'Home' },
-    { id: 'about', label: 'Our Story' },
-    { id: 'journeys', label: 'Journeys' },
-    { id: 'services', label: 'Expeditions' },
-    { id: 'gallery', label: 'Gallery' },
-    { id: 'contact', label: 'Enquiry' },
+  const navLinks = [
+    { id: 'journeys', label: 'JOURNEYS' },
+    { id: 'kenya', label: 'KENYA' },
+    { id: 'approach', label: 'OUR APPROACH' },
+    { id: 'about', label: 'ABOUT' },
   ];
 
-  const handleNavClick = (id: PageId) => {
-    setActivePage(id);
+  const handleLinkClick = (id: string) => {
+    onNavigate(id);
     setMobileMenuOpen(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const isLightHeader = scrolled;
-
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isLightHeader
-          ? 'bg-[#faf8f5]/95 backdrop-blur-md border-b border-[#e8e2d5] py-3.5 shadow-xs'
-          : 'bg-gradient-to-b from-black/80 via-black/40 to-transparent py-5'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between">
+    <header className="sticky top-0 z-50 bg-[#0E0E0D] border-b border-[#0E0E0D] text-[#F7F4EC] transition-all">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 py-5 flex items-center justify-between">
+        
+        {/* Brand Mark (Exact match to Word/PDF document) */}
         <button
-          onClick={() => handleNavClick('home')}
-          className="text-left group cursor-pointer focus:outline-none"
-          aria-label="Safari LAX - Home"
+          onClick={() => handleLinkClick('hero')}
+          className="text-left group cursor-pointer focus:outline-none flex flex-col items-start"
+          aria-label="Safari LAX"
         >
-          <span
-            className={`font-serif tracking-[0.32em] text-lg md:text-xl font-medium uppercase transition-colors ${
-              isLightHeader ? 'text-[#1c1a17] group-hover:text-[#997449]' : 'text-white group-hover:text-[#dfc8a2]'
-            }`}
-          >
-            SAFARI LAX
+          <span className="text-[10px] tracking-[0.38em] text-[#B8B3AA] font-light uppercase">
+            SAFARI
+          </span>
+          <span className="font-serif text-2xl md:text-3xl tracking-[0.24em] text-[#F7F4EC] font-normal leading-tight">
+            L A X
+          </span>
+          <span className="text-[7.5px] tracking-[0.28em] text-[#B8B3AA] uppercase mt-0.5 border-t border-[#B8B3AA]/30 pt-0.5">
+            PRIVATE AFRICA, UNHURRIED.
           </span>
         </button>
 
-        <nav className="hidden lg:flex items-center gap-9" aria-label="Main Navigation">
-          {navItems.map((item) => {
-            const isActive = activePage === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => handleNavClick(item.id)}
-                className={`text-xs uppercase tracking-[0.22em] font-medium transition-all relative py-1 focus:outline-none cursor-pointer ${
-                  isActive
-                    ? isLightHeader ? 'text-[#997449]' : 'text-[#dfc8a2]'
-                    : isLightHeader
-                      ? 'text-[#5c564c] hover:text-[#1c1a17]'
-                      : 'text-white/85 hover:text-white'
-                }`}
-              >
-                {item.label}
-                {isActive && (
-                  <span
-                    className={`absolute bottom-0 left-0 w-full h-[1.5px] ${
-                      isLightHeader ? 'bg-[#997449]' : 'bg-[#dfc8a2]'
-                    }`}
-                  />
-                )}
-              </button>
-            );
-          })}
+        {/* Desktop Navigation Links */}
+        <nav className="hidden lg:flex items-center gap-10" aria-label="Main Navigation">
+          {navLinks.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => handleLinkClick(item.id)}
+              className="text-[11px] uppercase tracking-[0.24em] font-normal text-[#F7F4EC]/85 hover:text-[#F7F4EC] transition-colors cursor-pointer py-1"
+            >
+              {item.label}
+            </button>
+          ))}
+
+          {/* AI Concierge Trigger */}
+          {onOpenConcierge && (
+            <button
+              onClick={onOpenConcierge}
+              className="text-[10px] uppercase tracking-[0.24em] text-[#B8B3AA] hover:text-[#F7F4EC] transition-colors flex items-center gap-1.5 cursor-pointer py-1"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-[#E6E0D4] animate-pulse"></span>
+              AI CONCIERGE
+            </button>
+          )}
+
+          {/* PRIVATE ENQUIRY Button (Outlined border box) */}
+          <button
+            onClick={onOpenEnquiry}
+            className="text-[10.5px] uppercase tracking-[0.22em] font-normal px-5 py-2.5 border border-[#E6E0D4] text-[#F7F4EC] hover:bg-[#F7F4EC] hover:text-[#0E0E0D] transition-all duration-300 cursor-pointer"
+          >
+            PRIVATE ENQUIRY
+          </button>
         </nav>
 
-        <div className="hidden lg:flex items-center gap-4">
-          <button
-            onClick={() => handleNavClick('contact')}
-            className={`text-xs uppercase tracking-[0.22em] font-medium py-2.5 px-6 transition-all duration-200 cursor-pointer ${
-              isLightHeader
-                ? 'bg-[#1c1a17] text-[#faf8f5] hover:bg-[#997449]'
-                : 'bg-[#c5a880] text-[#0f0e0c] hover:bg-[#dfc8a2]'
-            }`}
-          >
-            Plan Your Journey
-          </button>
-        </div>
-
+        {/* Mobile Hamburger Button */}
         <div className="flex items-center gap-3 lg:hidden">
           <button
-            onClick={() => handleNavClick('contact')}
-            className={`text-[11px] uppercase tracking-[0.18em] font-medium py-1.5 px-3 transition-colors ${
-              isLightHeader ? 'bg-[#1c1a17] text-[#faf8f5]' : 'bg-[#c5a880] text-[#0f0e0c]'
-            }`}
+            onClick={onOpenEnquiry}
+            className="text-[9.5px] uppercase tracking-[0.18em] px-3 py-1.5 border border-[#E6E0D4] text-[#F7F4EC]"
           >
-            Enquire
+            ENQUIRE
           </button>
-
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className={`p-1.5 focus:outline-none cursor-pointer ${isLightHeader ? 'text-[#1c1a17]' : 'text-white'}`}
-            aria-expanded={mobileMenuOpen}
-            aria-label="Toggle navigation menu"
+            className="p-2 text-[#F7F4EC] hover:text-[#E6E0D4] focus:outline-none"
+            aria-label="Toggle menu"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
       </div>
 
+      {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-[#faf8f5] border-b border-[#e8e2d5] px-6 py-6 space-y-4 animate-in fade-in duration-150 shadow-xl text-[#1c1a17]">
-          <nav className="flex flex-col space-y-2" aria-label="Mobile Navigation">
-            {navItems.map((item) => {
-              const isActive = activePage === item.id;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => handleNavClick(item.id)}
-                  className={`text-left text-sm uppercase tracking-[0.22em] font-medium py-2.5 border-b border-[#f0eae0] ${
-                    isActive ? 'text-[#997449]' : 'text-[#5c564c]'
-                  }`}
-                >
-                  {item.label}
-                </button>
-              );
-            })}
-          </nav>
-          <div className="pt-2">
+        <div className="lg:hidden bg-[#0E0E0D] border-b border-[#B8B3AA]/20 px-6 py-8 flex flex-col gap-6 animate-fadeIn">
+          {navLinks.map((item) => (
             <button
-              onClick={() => handleNavClick('contact')}
-              className="w-full text-center text-xs uppercase tracking-[0.22em] font-medium py-3.5 bg-[#1c1a17] text-[#faf8f5] hover:bg-[#997449] transition-colors"
+              key={item.id}
+              onClick={() => handleLinkClick(item.id)}
+              className="text-left text-sm uppercase tracking-[0.24em] text-[#F7F4EC] hover:text-[#E6E0D4] py-1 border-b border-white/5"
             >
-              Plan Your Journey
+              {item.label}
             </button>
-          </div>
+          ))}
+
+          {onOpenConcierge && (
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onOpenConcierge();
+              }}
+              className="text-left text-xs uppercase tracking-[0.22em] text-[#B8B3AA] hover:text-[#F7F4EC] py-2 flex items-center gap-2"
+            >
+              <span className="w-2 h-2 rounded-full bg-[#E6E0D4]"></span>
+              OPEN AI EXPEDITION CONCIERGE
+            </button>
+          )}
+
+          <button
+            onClick={() => {
+              setMobileMenuOpen(false);
+              onOpenEnquiry();
+            }}
+            className="w-full text-center text-xs uppercase tracking-[0.22em] py-3.5 border border-[#E6E0D4] text-[#0E0E0D] bg-[#F7F4EC] font-medium"
+          >
+            MAKE A PRIVATE ENQUIRY
+          </button>
         </div>
       )}
     </header>

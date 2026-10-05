@@ -3,38 +3,54 @@
 @theme {
   --font-serif: "Cormorant Garamond", Georgia, serif;
   --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
-  --color-sand-50: #fcfbf9;
-  --color-sand-100: #faf8f5;
-  --color-sand-200: #f3efe6;
-  --color-sand-300: #e8e2d5;
-  --color-sand-400: #d6ccba;
-  --color-gold-300: #dfc8a2;
-  --color-gold-400: #c5a880;
-  --color-gold-500: #b08f65;
-  --color-gold-600: #997449;
-  --color-savannah-800: #262420;
-  --color-savannah-900: #1c1a17;
-  --color-savannah-950: #0f0e0c;
+  
+  /* Exact Client Palette */
+  --color-near-black: #0E0E0D;
+  --color-ivory: #F7F4EC;
+  --color-smoke-grey: #B8B3AA;
+  --color-bone: #E6E0D4;
+
+  /* Legacy aliases for backward compatibility */
+  --color-sand-50: #F7F4EC;
+  --color-sand-100: #F7F4EC;
+  --color-sand-200: #E6E0D4;
+  --color-sand-300: #B8B3AA;
+  --color-savannah-900: #0E0E0D;
+  --color-savannah-950: #0E0E0D;
+  --color-gold-400: #B8B3AA;
+  --color-gold-500: #B8B3AA;
 }
 
 html {
   scroll-behavior: smooth;
   font-family: var(--font-sans);
-  background-color: #faf8f5;
-  color: #1c1a17;
+  background-color: #0E0E0D;
+  color: #0E0E0D;
 }
 
+/* Luxury B&W imagery styling matching client editorial document */
+.editorial-bw {
+  filter: grayscale(100%) contrast(108%) brightness(96%);
+  transition: filter 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.editorial-bw:hover {
+  filter: grayscale(85%) contrast(106%) brightness(98%);
+}
+
+/* Delicate subtle scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #f3efe6;
+  background: #0E0E0D;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d6ccba;
+  background: #B8B3AA;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #c5a880;
+  background: #E6E0D4;
 }
+

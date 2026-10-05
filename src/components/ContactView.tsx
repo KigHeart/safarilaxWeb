@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
 import { EnquiryData } from '../types';
 import { BRAND } from '../data/brand';
-import { Mail, Phone, MapPin, Globe, Clock, CheckCircle2, Send, Download, ShieldCheck, ArrowRight } from 'lucide-react';
+import { Mail, Phone, MapPin, Globe, Clock, CheckCircle2, Send, ShieldCheck } from 'lucide-react';
 
 interface ContactViewProps {
   initialJourneyTitle?: string;
-  openProposal: () => void;
 }
 
 export const ContactView: React.FC<ContactViewProps> = ({
-  initialJourneyTitle,
-  openProposal
+  initialJourneyTitle
 }) => {
   const [formData, setFormData] = useState<EnquiryData>({
     fullName: '',
@@ -60,171 +58,113 @@ export const ContactView: React.FC<ContactViewProps> = ({
     e.preventDefault();
     setSubmitting(true);
 
-    // Generate unique inquiry reference
     const ref = `SLX-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
     setReferenceCode(ref);
 
-    // Simulate dispatch to bookings@safarilax.world
     setTimeout(() => {
       setSubmitting(false);
       setSubmitted(true);
       window.scrollTo({ top: 150, behavior: 'smooth' });
-    }, 800);
+    }, 600);
   };
 
-  // Generate mailto link for direct sending backup
-  const mailtoSubject = encodeURIComponent(`Private Safari Enquiry [Ref: ${referenceCode || 'SLX-Direct'}] - ${formData.fullName}`);
+  const mailtoSubject = encodeURIComponent(`Private Safari Enquiry [${referenceCode || 'New'}] - ${formData.fullName}`);
   const mailtoBody = encodeURIComponent(
-    `Dear Safari LAX Bookings Desk,\n\n` +
-    `I am submitting an unhurried safari journey enquiry:\n\n` +
-    `Full Name: ${formData.fullName}\n` +
+    `Dear Safari LAX Private Safari Desk,\n\n` +
+    `I would like to consult on a private tailor-made safari in Kenya.\n\n` +
+    `Reference: ${referenceCode}\n` +
+    `Name: ${formData.fullName}\n` +
     `Email: ${formData.email}\n` +
     `Phone: ${formData.phone}\n` +
     `Country of Residence: ${formData.countryOfResidence}\n` +
-    `Target Travel Dates / Season: ${formData.travelDates}\n` +
-    `Trip Length: ${formData.durationDays}\n` +
+    `Estimated Travel Window: ${formData.travelDates}\n` +
+    `Duration: ${formData.durationDays}\n` +
     `Party Size: ${formData.adultsCount} Adults, ${formData.childrenCount} Children\n` +
-    `Indicative Nightly Budget: ${formData.budgetPerPerson}\n` +
-    `Selected Concessions: ${formData.destinations.join(', ')}\n` +
-    `Style: ${formData.journeyStyle}\n\n` +
+    `Budget Guidance: ${formData.budgetPerPerson}\n` +
+    `Selected Concessions:\n${formData.destinations.map(d => ` - ${d}`).join('\n')}\n\n` +
     `Notes & Bespoke Wishes:\n${formData.specialRequests}\n\n` +
     `Kind regards,\n${formData.fullName}`
   );
 
-  const downloadSummaryDossier = () => {
-    const summary = 
-`=========================================
-SAFARI LAX — PRIVATE AFRICA, UNHURRIED
-Private Journey Planning Dossier
-=========================================
-Reference Code: ${referenceCode}
-Client Name: ${formData.fullName}
-Email: ${formData.email}
-Phone: ${formData.phone}
-Country: ${formData.countryOfResidence}
-Target Travel Window: ${formData.travelDates}
-Duration: ${formData.durationDays}
-Guests: ${formData.adultsCount} Adults, ${formData.childrenCount} Children
-Budget Guidance: ${formData.budgetPerPerson}
-
-Selected Concessions & Ecosystems:
-${formData.destinations.map(d => ` - ${d}`).join('\n')}
-
-Special Requests & Aviation Preferences:
-${formData.specialRequests || 'Standard bespoke protocol'}
-
-Routing Address: ${BRAND.bookingEmail}
-Registered Domain: ${BRAND.domain}
-Headquarters: Karen Sanctuary Lane, Nairobi, Kenya
-=========================================`;
-
-    const blob = new Blob([summary], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `Safari_LAX_Enquiry_${referenceCode || 'Draft'}.txt`;
-    link.click();
-    URL.revokeObjectURL(url);
-  };
-
   return (
-    <div className="pt-24 pb-20 space-y-20">
+    <div className="pt-28 pb-24 space-y-20 bg-[#faf8f5] text-[#1c1a17]">
       
       {/* HEADER SECTION */}
       <section className="max-w-4xl mx-auto px-6 text-center space-y-5">
-        <div className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-[#c5a880] font-medium">
+        <div className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-[#997449] font-semibold">
           <span>Private Concierge Desk</span>
           <span>·</span>
-          <span>Direct to Nairobi HQ</span>
+          <span>Nairobi, Kenya</span>
         </div>
 
-        <h1 className="font-serif text-4xl sm:text-6xl text-[#FAF8F5] font-normal leading-tight text-balance">
-          Initiate Your <br />
-          <span className="italic text-[#c5a880] font-light">Private Enquiry</span>
+        <h1 className="font-serif text-4xl sm:text-6xl text-[#1c1a17] font-normal leading-tight text-balance">
+          Commence Your <br />
+          <span className="italic text-[#997449] font-light">Private Expedition</span>
         </h1>
 
-        <p className="text-sm sm:text-base text-[#ded7c8] font-light leading-relaxed max-w-2xl mx-auto">
-          Every journey begins with a thoughtful dialogue. Please share your preliminary thoughts below. Our private safari planners in Nairobi will design a tailored day-by-day blueprint and quote.
+        <p className="max-w-2xl mx-auto text-base text-[#5c564c] font-light leading-relaxed">
+          Tell us about your travelers, ideal dates, and wildlife aspirations. A dedicated Safari LAX naturalist will respond personally within 24 hours.
         </p>
-
-        <div className="pt-2 flex items-center justify-center gap-3 text-xs text-[#8e8a80]">
-          <span className="flex items-center gap-1.5">
-            <Mail className="w-3.5 h-3.5 text-[#c5a880]" />
-            <span>Target Inbox: <strong className="text-[#ded7c8]">{BRAND.bookingEmail}</strong></span>
-          </span>
-          <span>·</span>
-          <span>Guaranteed response within 24 hours</span>
-        </div>
       </section>
 
-      {/* FORM AND CONTACT INFORMATION GRID */}
+      {/* FORM AND DIRECT DETAILS */}
       <section className="max-w-7xl mx-auto px-6 md:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           
-          {/* LEFT: PRIVATE ENQUIRY FORM */}
-          <div className="lg:col-span-8 bg-[#141311] border border-[#24221d] p-6 sm:p-10 shadow-2xl relative">
-            
+          {/* Main Form Column */}
+          <div className="lg:col-span-8 bg-white border border-[#e8e2d5] p-8 md:p-12 shadow-sm">
             {submitted ? (
-              <div className="py-12 px-4 text-center space-y-6 animate-in fade-in zoom-in-95 duration-300">
-                <div className="w-16 h-16 bg-[#211f19] border border-[#c5a880] rounded-full mx-auto flex items-center justify-center text-[#c5a880]">
+              <div className="text-center py-12 space-y-6">
+                <div className="w-16 h-16 bg-[#f5f0e6] border border-[#ded7c8] rounded-full flex items-center justify-center mx-auto text-[#997449]">
                   <CheckCircle2 className="w-8 h-8" />
                 </div>
 
                 <div className="space-y-2">
-                  <div className="text-xs uppercase tracking-[0.25em] text-[#c5a880] font-medium">
-                    Enquiry Successfully Routed
+                  <div className="text-xs uppercase tracking-[0.25em] text-[#997449] font-semibold">
+                    Enquiry Logged Under Protocol {referenceCode}
                   </div>
-                  <h3 className="font-serif text-3xl text-[#FAF8F5]">
-                    Asante Sana, {formData.fullName}
+                  <h3 className="font-serif text-3xl sm:text-4xl text-[#1c1a17]">
+                    Asante Sana, {formData.fullName.split(' ')[0]}
                   </h3>
-                  <p className="text-sm text-[#ded7c8] max-w-lg mx-auto leading-relaxed">
-                    Your bespoke travel dossier has been compiled and routed directly to our private booking desk at <strong className="text-[#c5a880]">{BRAND.bookingEmail}</strong>.
+                  <p className="text-sm text-[#5c564c] max-w-md mx-auto leading-relaxed">
+                    Your bespoke journey request has been routed to our senior safari desk at Karen Sanctuary Lane in Nairobi.
                   </p>
                 </div>
 
-                {/* Dossier Code Card */}
-                <div className="bg-[#181613] border border-[#2a2822] p-5 max-w-md mx-auto text-left space-y-2 text-xs">
-                  <div className="flex justify-between items-center text-[#8e8a80]">
-                    <span>Reference Dossier:</span>
-                    <span className="font-mono text-[#c5a880] font-medium text-sm">{referenceCode}</span>
+                <div className="bg-[#faf8f5] border border-[#e8e2d5] p-6 max-w-lg mx-auto text-left text-xs space-y-2.5">
+                  <div className="flex justify-between items-center text-[#736f67]">
+                    <span>Reference Code:</span>
+                    <span className="text-[#1c1a17] font-mono font-semibold">{referenceCode}</span>
                   </div>
-                  <div className="flex justify-between items-center text-[#8e8a80]">
+                  <div className="flex justify-between items-center text-[#736f67]">
                     <span>Target Inbox:</span>
-                    <span className="text-[#FAF8F5] font-mono">{BRAND.bookingEmail}</span>
+                    <span className="text-[#1c1a17] font-mono">{BRAND.bookingEmail}</span>
                   </div>
-                  <div className="flex justify-between items-center text-[#8e8a80]">
+                  <div className="flex justify-between items-center text-[#736f67]">
                     <span>Party:</span>
-                    <span className="text-[#FAF8F5]">{formData.adultsCount} Adults, {formData.childrenCount} Children</span>
+                    <span className="text-[#1c1a17]">{formData.adultsCount} Adults, {formData.childrenCount} Children</span>
                   </div>
-                  <div className="flex justify-between items-center text-[#8e8a80]">
+                  <div className="flex justify-between items-center text-[#736f67]">
                     <span>Estimated Length:</span>
-                    <span className="text-[#FAF8F5]">{formData.durationDays}</span>
+                    <span className="text-[#1c1a17]">{formData.durationDays}</span>
                   </div>
                 </div>
 
                 {/* Post Submit Actions */}
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+                <div className="flex items-center justify-center pt-4">
                   <a
                     href={`mailto:${BRAND.bookingEmail}?subject=${mailtoSubject}&body=${mailtoBody}`}
-                    className="w-full sm:w-auto px-6 py-3 bg-[#c5a880] text-[#0e0d0b] text-xs uppercase tracking-[0.2em] font-medium hover:bg-[#d4b896] transition-colors flex items-center justify-center gap-2"
+                    className="px-8 py-3.5 bg-[#1c1a17] text-[#faf8f5] text-xs uppercase tracking-[0.2em] font-medium hover:bg-[#997449] transition-colors flex items-center justify-center gap-2"
                   >
-                    <Mail className="w-3.5 h-3.5" />
+                    <Mail className="w-3.5 h-3.5 text-[#dfc8a2]" />
                     <span>Open in Email Client</span>
                   </a>
-
-                  <button
-                    onClick={downloadSummaryDossier}
-                    className="w-full sm:w-auto px-6 py-3 border border-[#2e2a22] text-[#FAF8F5] text-xs uppercase tracking-[0.2em] hover:bg-[#201e19] transition-colors flex items-center justify-center gap-2"
-                  >
-                    <Download className="w-3.5 h-3.5 text-[#c5a880]" />
-                    <span>Download Summary Dossier</span>
-                  </button>
                 </div>
 
                 <div className="pt-6">
                   <button
                     onClick={() => setSubmitted(false)}
-                    className="text-xs text-[#8e8a80] hover:text-[#FAF8F5] underline underline-offset-4"
+                    className="text-xs text-[#736f67] hover:text-[#1c1a17] underline underline-offset-4 cursor-pointer"
                   >
                     Submit an additional journey request
                   </button>
@@ -235,316 +175,262 @@ Headquarters: Karen Sanctuary Lane, Nairobi, Kenya
                 
                 {/* Section 1: Guest Information */}
                 <div className="space-y-4">
-                  <div className="text-xs uppercase tracking-[0.2em] text-[#c5a880] font-medium border-b border-[#24221d] pb-2">
+                  <div className="text-xs uppercase tracking-[0.2em] text-[#997449] font-semibold border-b border-[#f0eae0] pb-2">
                     01. Principal Traveler Information
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <label className="block text-xs text-[#a8a396]">Full Name *</label>
+                      <label className="block text-xs text-[#5c564c] font-medium">Full Name *</label>
                       <input
                         type="text"
                         required
                         value={formData.fullName}
                         onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                         placeholder="e.g. Lady Eleanor Vance"
-                        className="w-full bg-[#181613] border border-[#262420] text-sm text-[#FAF8F5] px-3.5 py-2.5 focus:outline-none focus:border-[#c5a880]"
+                        className="w-full p-3 bg-[#faf8f5] border border-[#ded7c8] text-xs text-[#1c1a17] focus:outline-none focus:border-[#997449]"
                       />
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="block text-xs text-[#a8a396]">Email Address *</label>
+                      <label className="block text-xs text-[#5c564c] font-medium">Direct Email *</label>
                       <input
                         type="email"
                         required
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        placeholder="e.g. eleanor@vance-holdings.co.uk"
-                        className="w-full bg-[#181613] border border-[#262420] text-sm text-[#FAF8F5] px-3.5 py-2.5 focus:outline-none focus:border-[#c5a880]"
+                        placeholder="e.g. eleanor@vance-holdings.com"
+                        className="w-full p-3 bg-[#faf8f5] border border-[#ded7c8] text-xs text-[#1c1a17] focus:outline-none focus:border-[#997449]"
                       />
                     </div>
-                  </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <label className="block text-xs text-[#a8a396]">Phone / WhatsApp (with country code) *</label>
+                      <label className="block text-xs text-[#5c564c] font-medium">Phone Number / WhatsApp *</label>
                       <input
                         type="tel"
                         required
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        placeholder="+44 7700 900123"
-                        className="w-full bg-[#181613] border border-[#262420] text-sm text-[#FAF8F5] px-3.5 py-2.5 focus:outline-none focus:border-[#c5a880]"
+                        placeholder="+44 7700 900077"
+                        className="w-full p-3 bg-[#faf8f5] border border-[#ded7c8] text-xs text-[#1c1a17] focus:outline-none focus:border-[#997449]"
                       />
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="block text-xs text-[#a8a396]">Country of Residence</label>
+                      <label className="block text-xs text-[#5c564c] font-medium">Country of Residence</label>
                       <input
                         type="text"
                         value={formData.countryOfResidence}
                         onChange={(e) => setFormData({ ...formData, countryOfResidence: e.target.value })}
-                        placeholder="e.g. United Kingdom / United States"
-                        className="w-full bg-[#181613] border border-[#262420] text-sm text-[#FAF8F5] px-3.5 py-2.5 focus:outline-none focus:border-[#c5a880]"
+                        placeholder="United Kingdom / United States"
+                        className="w-full p-3 bg-[#faf8f5] border border-[#ded7c8] text-xs text-[#1c1a17] focus:outline-none focus:border-[#997449]"
                       />
                     </div>
                   </div>
                 </div>
 
-                {/* Section 2: Journey Parameters */}
+                {/* Section 2: Journey Logistics */}
                 <div className="space-y-4">
-                  <div className="text-xs uppercase tracking-[0.2em] text-[#c5a880] font-medium border-b border-[#24221d] pb-2">
-                    02. Expedition Timing & Party Size
+                  <div className="text-xs uppercase tracking-[0.2em] text-[#997449] font-semibold border-b border-[#f0eae0] pb-2">
+                    02. Journey Parameters & Timing
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div className="space-y-1.5">
-                      <label className="block text-xs text-[#a8a396]">Target Travel Dates or Preferred Month</label>
+                      <label className="block text-xs text-[#5c564c] font-medium">Target Travel Dates</label>
                       <input
                         type="text"
                         value={formData.travelDates}
                         onChange={(e) => setFormData({ ...formData, travelDates: e.target.value })}
-                        placeholder="e.g. August 2026 or Early Autumn"
-                        className="w-full bg-[#181613] border border-[#262420] text-sm text-[#FAF8F5] px-3.5 py-2.5 focus:outline-none focus:border-[#c5a880]"
+                        placeholder="e.g. August 2026 or Flexible"
+                        className="w-full p-3 bg-[#faf8f5] border border-[#ded7c8] text-xs text-[#1c1a17] focus:outline-none focus:border-[#997449]"
                       />
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="block text-xs text-[#a8a396]">Estimated Duration</label>
+                      <label className="block text-xs text-[#5c564c] font-medium">Estimated Duration</label>
                       <select
                         value={formData.durationDays}
                         onChange={(e) => setFormData({ ...formData, durationDays: e.target.value })}
-                        className="w-full bg-[#181613] border border-[#262420] text-sm text-[#FAF8F5] px-3.5 py-2.5 focus:outline-none focus:border-[#c5a880]"
+                        className="w-full p-3 bg-[#faf8f5] border border-[#ded7c8] text-xs text-[#1c1a17] focus:outline-none focus:border-[#997449]"
                       >
-                        <option value="6-7 Days (Single Sanctuary)">6-7 Days (Single Sanctuary)</option>
-                        <option value="8-10 Days (Quintessential Classic)">8-10 Days (Quintessential Classic)</option>
-                        <option value="11-14 Days (Grand Unhurried Odyssey)">11-14 Days (Grand Unhurried Odyssey)</option>
-                        <option value="15+ Days (East Africa & Coastal Archipelago)">15+ Days (East Africa & Coastal Archipelago)</option>
+                        <option>6-7 Days (Focused)</option>
+                        <option>8-10 Days (Unhurried Recommended)</option>
+                        <option>11-14 Days (Grand Multi-Region)</option>
+                        <option>15+ Days (East Africa Traverse)</option>
                       </select>
                     </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-1.5">
-                      <label className="block text-xs text-[#a8a396]">Adult Travelers (Age 16+)</label>
-                      <input
-                        type="number"
-                        min="1"
-                        max="24"
-                        value={formData.adultsCount}
-                        onChange={(e) => setFormData({ ...formData, adultsCount: parseInt(e.target.value) || 1 })}
-                        className="w-full bg-[#181613] border border-[#262420] text-sm text-[#FAF8F5] px-3.5 py-2.5 focus:outline-none focus:border-[#c5a880]"
-                      />
-                    </div>
 
                     <div className="space-y-1.5">
-                      <label className="block text-xs text-[#a8a396]">Children (Under 16)</label>
-                      <input
-                        type="number"
-                        min="0"
-                        max="12"
-                        value={formData.childrenCount}
-                        onChange={(e) => setFormData({ ...formData, childrenCount: parseInt(e.target.value) || 0 })}
-                        className="w-full bg-[#181613] border border-[#262420] text-sm text-[#FAF8F5] px-3.5 py-2.5 focus:outline-none focus:border-[#c5a880]"
-                      />
+                      <label className="block text-xs text-[#5c564c] font-medium">Travel Party</label>
+                      <div className="flex gap-2">
+                        <select
+                          value={formData.adultsCount}
+                          onChange={(e) => setFormData({ ...formData, adultsCount: Number(e.target.value) })}
+                          className="w-1/2 p-3 bg-[#faf8f5] border border-[#ded7c8] text-xs text-[#1c1a17] focus:outline-none focus:border-[#997449]"
+                        >
+                          {[1,2,3,4,5,6,7,8,9,10].map(n => (
+                            <option key={n} value={n}>{n} Adults</option>
+                          ))}
+                        </select>
+                        <select
+                          value={formData.childrenCount}
+                          onChange={(e) => setFormData({ ...formData, childrenCount: Number(e.target.value) })}
+                          className="w-1/2 p-3 bg-[#faf8f5] border border-[#ded7c8] text-xs text-[#1c1a17] focus:outline-none focus:border-[#997449]"
+                        >
+                          {[0,1,2,3,4,5].map(n => (
+                            <option key={n} value={n}>{n} Kids</option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Section 3: Concessions & Preferences */}
+                {/* Section 3: Desired Sanctuaries */}
                 <div className="space-y-4">
-                  <div className="text-xs uppercase tracking-[0.2em] text-[#c5a880] font-medium border-b border-[#24221d] pb-2">
-                    03. Concessions & Indicative Tier
+                  <div className="text-xs uppercase tracking-[0.2em] text-[#997449] font-semibold border-b border-[#f0eae0] pb-2">
+                    03. Concessions & Ecosystems of Interest
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="block text-xs text-[#a8a396]">
-                      Ecosystems of Interest (Select all that apply)
-                    </label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                      {destinationsOptions.map((opt) => {
-                        const checked = formData.destinations.includes(opt);
-                        return (
-                          <button
-                            key={opt}
-                            type="button"
-                            onClick={() => handleDestinationToggle(opt)}
-                            className={`p-2.5 text-left text-xs border transition-colors flex items-start gap-2 ${
-                              checked
-                                ? 'bg-[#222019] border-[#c5a880] text-[#FAF8F5]'
-                                : 'bg-[#181613] border-[#262420] text-[#8e8a80] hover:text-[#FAF8F5]'
-                            }`}
-                          >
-                            <span className={`w-3.5 h-3.5 rounded-sm border flex items-center justify-center shrink-0 mt-0.5 ${checked ? 'bg-[#c5a880] border-[#c5a880] text-[#0e0d0b]' : 'border-[#3a372e]'}`}>
-                              {checked && '✓'}
-                            </span>
-                            <span className="leading-snug">{opt}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    {destinationsOptions.map((dest) => {
+                      const isSelected = formData.destinations.includes(dest);
+                      return (
+                        <button
+                          type="button"
+                          key={dest}
+                          onClick={() => handleDestinationToggle(dest)}
+                          className={`p-3 text-left text-xs transition-all flex items-center justify-between border cursor-pointer ${
+                            isSelected
+                              ? 'bg-[#f5f0e6] border-[#997449] text-[#1c1a17] font-medium'
+                              : 'bg-[#faf8f5] border-[#ded7c8] text-[#5c564c] hover:border-[#b08f65]'
+                          }`}
+                        >
+                          <span className="truncate pr-2">{dest}</span>
+                          <span className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center shrink-0 ${
+                            isSelected ? 'bg-[#997449] border-[#997449]' : 'border-[#b5ad9e]'
+                          }`}>
+                            {isSelected && <span className="w-1.5 h-1.5 bg-white rounded-full" />}
+                          </span>
+                        </button>
+                      );
+                    })}
                   </div>
+                </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-1.5">
-                      <label className="block text-xs text-[#a8a396]">Indicative Nightly Investment Level</label>
-                      <select
-                        value={formData.budgetPerPerson}
-                        onChange={(e) => setFormData({ ...formData, budgetPerPerson: e.target.value })}
-                        className="w-full bg-[#181613] border border-[#262420] text-sm text-[#FAF8F5] px-3.5 py-2.5 focus:outline-none focus:border-[#c5a880]"
-                      >
-                        <option value="$1,500 – $2,200 per guest/night (Private Concession Luxury)">$1,500 – $2,200 per guest/night (Private Concession Luxury)</option>
-                        <option value="$2,200 – $3,500 per guest/night (Premier Tented Suites & Charters)">$2,200 – $3,500 per guest/night (Premier Tented Suites & Charters)</option>
-                        <option value="$3,500+ per guest/night (Exclusive Bush Villa Buyout / Helicopter)">$3,500+ per guest/night (Exclusive Bush Villa Buyout / Helicopter)</option>
-                      </select>
-                    </div>
-
-                    <div className="space-y-1.5">
-                      <label className="block text-xs text-[#a8a396]">Primary Travel Theme</label>
-                      <select
-                        value={formData.journeyStyle}
-                        onChange={(e) => setFormData({ ...formData, journeyStyle: e.target.value })}
-                        className="w-full bg-[#181613] border border-[#262420] text-sm text-[#FAF8F5] px-3.5 py-2.5 focus:outline-none focus:border-[#c5a880]"
-                      >
-                        <option value="Classic Wildlife & Private Concession">Classic Wildlife & Private Concession</option>
-                        <option value="Photographic Specialist & Wildlife Filming">Photographic Specialist & Wildlife Filming</option>
-                        <option value="Helicopter Aerial Expedition">Helicopter Aerial Expedition</option>
-                        <option value="Romantic Honeymoon & Anniversary">Romantic Honeymoon & Anniversary</option>
-                        <option value="Family Exclusive Estate Buyout">Family Exclusive Estate Buyout</option>
-                      </select>
-                    </div>
+                {/* Section 4: Special Wishes */}
+                <div className="space-y-4">
+                  <div className="text-xs uppercase tracking-[0.2em] text-[#997449] font-semibold border-b border-[#f0eae0] pb-2">
+                    04. Bespoke Wishes & Aviation Preferences
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="block text-xs text-[#a8a396]">
-                      Special Wishes, Flight Logistics or Dietary Notes
-                    </label>
+                    <label className="block text-xs text-[#5c564c] font-medium">Notes, Dietary Needs, Aviation or Photographic Requests</label>
                     <textarea
-                      rows={3}
+                      rows={4}
                       value={formData.specialRequests}
                       onChange={(e) => setFormData({ ...formData, specialRequests: e.target.value })}
-                      placeholder="Please note any particular wildlife species (e.g. pangolin, aardvark, rhinos), private aviation requests, or special milestone celebrations."
-                      className="w-full bg-[#181613] border border-[#262420] text-sm text-[#FAF8F5] p-3.5 focus:outline-none focus:border-[#c5a880]"
+                      placeholder="Please note any private charter requests, anniversary celebrations, mobility needs, or preferences for specific camps..."
+                      className="w-full p-3 bg-[#faf8f5] border border-[#ded7c8] text-xs text-[#1c1a17] focus:outline-none focus:border-[#997449]"
                     />
                   </div>
                 </div>
 
-                {/* Dispatch Button */}
-                <div className="pt-4 border-t border-[#24221d] flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <div className="text-xs text-[#8e8a80]">
-                    By submitting, your request routes directly to <span className="text-[#c5a880]">{BRAND.bookingEmail}</span>.
-                  </div>
-
+                <div className="pt-4">
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="w-full sm:w-auto px-8 py-3.5 bg-[#c5a880] text-[#0e0d0b] text-xs uppercase tracking-[0.2em] font-medium hover:bg-[#d4b896] transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                    className="w-full py-4 bg-[#1c1a17] text-[#faf8f5] hover:bg-[#997449] text-xs uppercase tracking-[0.22em] font-medium transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-md disabled:opacity-50"
                   >
                     {submitting ? (
-                      <span>Preparing Itinerary Dossier...</span>
+                      <span>Submitting Protocol...</span>
                     ) : (
                       <>
-                        <Send className="w-3.5 h-3.5" />
-                        <span>Send Private Enquiry</span>
+                        <Send className="w-3.5 h-3.5 text-[#dfc8a2]" />
+                        <span>Submit Private Journey Consultation</span>
                       </>
                     )}
                   </button>
+                  <p className="text-[11px] text-[#736f67] text-center mt-2.5">
+                    Your details are held under strict non-disclosure. We never share traveler information with third parties.
+                  </p>
                 </div>
 
               </form>
             )}
-
           </div>
 
-          {/* RIGHT: NAIROBI HQ & CONCIERGE INFORMATION */}
+          {/* Sidebar Column: Direct Lines and Accreditations */}
           <div className="lg:col-span-4 space-y-6">
             
-            {/* Headquarters Card */}
-            <div className="bg-[#141311] border border-[#24221d] p-6 sm:p-8 space-y-6">
-              <div>
-                <div className="text-[10px] uppercase tracking-[0.25em] text-[#c5a880] font-medium">
-                  {BRAND.teamTitle}
+            <div className="bg-[#f5f0e6] border border-[#ded7c8] p-8 space-y-6">
+              <div className="space-y-2 border-b border-[#ded7c8] pb-4">
+                <div className="text-[10px] uppercase tracking-widest text-[#997449] font-semibold">
+                  Direct Inquiries
                 </div>
-                <h3 className="font-serif text-2xl text-[#FAF8F5] mt-1">
-                  Nairobi Headquarters
+                <h3 className="font-serif text-2xl text-[#1c1a17]">
+                  The Safari Desk
                 </h3>
               </div>
 
-              <div className="space-y-4 text-xs text-[#ded7c8]">
+              <div className="space-y-4 text-xs text-[#4a453d]">
                 <div className="flex items-start gap-3">
-                  <MapPin className="w-4 h-4 text-[#c5a880] shrink-0 mt-0.5" />
+                  <Mail className="w-4 h-4 text-[#997449] shrink-0 mt-0.5" />
                   <div>
-                    <strong className="block text-[#FAF8F5]">Physical Office:</strong>
-                    <span>{BRAND.officeAddress}</span>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <Mail className="w-4 h-4 text-[#c5a880] shrink-0 mt-0.5" />
-                  <div>
-                    <strong className="block text-[#FAF8F5]">Private Bookings:</strong>
-                    <a href={`mailto:${BRAND.bookingEmail}`} className="hover:text-[#c5a880] font-mono text-[11px] underline">
+                    <strong className="block text-[#1c1a17]">Journey Reservations:</strong>
+                    <a href={`mailto:${BRAND.bookingEmail}`} className="hover:text-[#997449] transition-colors font-mono">
                       {BRAND.bookingEmail}
                     </a>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <Mail className="w-4 h-4 text-[#c5a880] shrink-0 mt-0.5" />
+                  <Mail className="w-4 h-4 text-[#997449] shrink-0 mt-0.5" />
                   <div>
-                    <strong className="block text-[#FAF8F5]">General Information:</strong>
-                    <a href={`mailto:${BRAND.infoEmail}`} className="hover:text-[#c5a880] font-mono text-[11px] underline">
+                    <strong className="block text-[#1c1a17]">General Information:</strong>
+                    <a href={`mailto:${BRAND.infoEmail}`} className="hover:text-[#997449] transition-colors font-mono">
                       {BRAND.infoEmail}
                     </a>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <Phone className="w-4 h-4 text-[#c5a880] shrink-0 mt-0.5" />
+                  <Phone className="w-4 h-4 text-[#997449] shrink-0 mt-0.5" />
                   <div>
-                    <strong className="block text-[#FAF8F5]">Direct Telephone:</strong>
-                    <span>{BRAND.phone}</span>
+                    <strong className="block text-[#1c1a17]">Direct Concierge Phone:</strong>
+                    <a href={`tel:${BRAND.phone.replace(/[^0-9+]/g, '')}`} className="hover:text-[#997449] transition-colors font-mono">
+                      {BRAND.phone}
+                    </a>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <Clock className="w-4 h-4 text-[#c5a880] shrink-0 mt-0.5" />
+                  <MapPin className="w-4 h-4 text-[#997449] shrink-0 mt-0.5" />
                   <div>
-                    <strong className="block text-[#FAF8F5]">Operating Hours:</strong>
+                    <strong className="block text-[#1c1a17]">Nairobi Headquarters:</strong>
+                    <span>{BRAND.officeAddress}</span>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <Clock className="w-4 h-4 text-[#997449] shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="block text-[#1c1a17]">Operating Hours:</strong>
                     <span>{BRAND.hours}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="p-4 bg-[#181613] border border-[#2a2720] space-y-2">
-                <div className="text-[11px] uppercase tracking-wider text-[#c5a880] font-medium flex items-center gap-1.5">
+              <div className="p-4 bg-white border border-[#ded7c8] space-y-2">
+                <div className="text-[11px] uppercase tracking-wider text-[#997449] font-semibold flex items-center gap-1.5">
                   <ShieldCheck className="w-3.5 h-3.5" />
                   <span>Discreet Confidentiality</span>
                 </div>
-                <p className="text-xs text-[#8e8a80] leading-relaxed">
-                  We frequently accommodate high-profile and discreet guests. Private charter flight plans and guest names are handled under strict non-disclosure protocols.
+                <p className="text-xs text-[#5c564c] leading-relaxed">
+                  We frequently accommodate high-profile and discreet guests. Private charter flight plans and guest passenger manifests are handled under strict non-disclosure protocols.
                 </p>
               </div>
-            </div>
-
-            {/* Quick Handover Link Box */}
-            <div className="bg-[#181613] border border-[#2a2720] p-6 space-y-3">
-              <div className="text-[10px] uppercase tracking-wider text-[#c5a880] font-medium">
-                Technical Handover & Setup
-              </div>
-              <h4 className="font-serif text-lg text-[#FAF8F5]">
-                Namecheap DNS & WordPress Setup
-              </h4>
-              <p className="text-xs text-[#8e8a80] leading-relaxed">
-                Review the step-by-step instructions for pointing safarilax.world while preserving active info@ and bookings@ email inboxes.
-              </p>
-              <button
-                onClick={openProposal}
-                className="text-xs text-[#c5a880] hover:text-[#FAF8F5] underline underline-offset-4 flex items-center gap-1 pt-1"
-              >
-                <span>Open Setup Dossier</span>
-                <ArrowRight className="w-3 h-3" />
-              </button>
             </div>
 
           </div>

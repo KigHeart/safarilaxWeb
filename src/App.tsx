@@ -1,121 +1,69 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
-import React, { useState, useEffect } from 'react';
-import { PageId, Journey, GalleryImage } from './types';
+import React, { useState } from 'react';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
-import { HomeView } from './components/HomeView';
-import { AboutView } from './components/AboutView';
-import { JourneysView } from './components/JourneysView';
-import { ServicesView } from './components/ServicesView';
-import { GalleryView } from './components/GalleryView';
-import { ContactView } from './components/ContactView';
-import { JourneyModal } from './components/JourneyModal';
-import { GalleryModal } from './components/GalleryModal';
-import { GALLERY_ITEMS } from './data/gallery';
+import { EditorialSections } from './components/EditorialSections';
+import { AIConciergeModal } from './components/AIConciergeModal';
+import { Sparkles } from 'lucide-react';
 
 export default function App() {
-  const [activePage, setActivePage] = useState<PageId>('home');
-  const [selectedJourney, setSelectedJourney] = useState<Journey | null>(null);
-  const [selectedGalleryImage, setSelectedGalleryImage] = useState<GalleryImage | null>(null);
-  const [contactInitialJourney, setContactInitialJourney] = useState<string>('');
+  const [isConciergeOpen, setIsConciergeOpen] = useState(false);
 
-  useEffect(() => {
-    const handleHash = () => {
-      const hash = window.location.hash.replace('#', '') as PageId;
-      if (['home', 'about', 'journeys', 'services', 'gallery', 'contact'].includes(hash)) {
-        setActivePage(hash);
-      }
-    };
-    handleHash();
-    window.addEventListener('hashchange', handleHash);
-    return () => window.removeEventListener('hashchange', handleHash);
-  }, []);
-
-  const handlePageChange = (page: PageId) => {
-    setActivePage(page);
-    window.location.hash = page;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
-  const handleOpenJourney = (journey: Journey) => {
-    setSelectedJourney(journey);
-  };
-
-  const handleCustomizeJourney = (journey: Journey) => {
-    setContactInitialJourney(journey.title);
-    setSelectedJourney(null);
-    handlePageChange('contact');
+  const handleOpenEnquiry = () => {
+    scrollToSection('enquiry');
   };
 
   return (
-    <div className="min-h-screen bg-[#0e0d0b] text-[#FAF8F5] flex flex-col font-sans selection:bg-[#c5a880]/30 selection:text-[#FAF8F5]">
+    <div className="min-h-screen bg-[#0E0E0D] text-[#F7F4EC] flex flex-col font-sans selection:bg-[#E6E0D4] selection:text-[#0E0E0D]">
       
-      {/* Universal Top Navigation */}
+      {/* Universal Top Navigation matching Word/PDF spec */}
       <Header
-        activePage={activePage}
-        setActivePage={handlePageChange}
+        onNavigate={scrollToSection}
+        onOpenEnquiry={handleOpenEnquiry}
+        onOpenConcierge={() => setIsConciergeOpen(true)}
       />
 
-      {/* Main View Area */}
+      {/* Main Editorial Narrative matching Pages 1-9 */}
       <main className="flex-1">
-        {activePage === 'home' && (
-          <HomeView
-            setActivePage={handlePageChange}
-            onOpenJourney={handleOpenJourney}
-          />
-        )}
-
-        {activePage === 'about' && (
-          <AboutView setActivePage={handlePageChange} />
-        )}
-
-        {activePage === 'journeys' && (
-          <JourneysView
-            onOpenJourney={handleOpenJourney}
-            onCustomizeJourney={handleCustomizeJourney}
-            setActivePage={handlePageChange}
-          />
-        )}
-
-        {activePage === 'services' && (
-          <ServicesView setActivePage={handlePageChange} />
-        )}
-
-        {activePage === 'gallery' && (
-          <GalleryView
-            onSelectImage={(img) => setSelectedGalleryImage(img)}
-          />
-        )}
-
-        {activePage === 'contact' && (
-          <ContactView
-            initialJourneyTitle={contactInitialJourney}
-          />
-        )}
+        <EditorialSections
+          onNavigate={scrollToSection}
+          onOpenEnquiry={handleOpenEnquiry}
+          onOpenConcierge={() => setIsConciergeOpen(true)}
+        />
       </main>
 
-      {/* Clean 3-Column Luxury Footer */}
+      {/* Universal Footer matching Word/PDF spec */}
       <Footer
-        setActivePage={handlePageChange}
+        onNavigate={scrollToSection}
+        onOpenEnquiry={handleOpenEnquiry}
       />
 
-      {/* Journey Detail Modal */}
-      <JourneyModal
-        journey={selectedJourney}
-        onClose={() => setSelectedJourney(null)}
-        onEnquireJourney={handleCustomizeJourney}
-      />
+      {/* Autonomous AI Concierge Floating Button */}
+      <div className="fixed bottom-6 right-6 z-40">
+        <button
+          onClick={() => setIsConciergeOpen(true)}
+          className="group flex items-center gap-2.5 px-4 py-2.5 bg-[#0E0E0D] border border-[#E6E0D4]/70 text-[#F7F4EC] hover:bg-[#F7F4EC] hover:text-[#0E0E0D] transition-all duration-300 shadow-xl cursor-pointer"
+          aria-label="Open AI Concierge"
+        >
+          <span className="w-2 h-2 rounded-full bg-[#E6E0D4] group-hover:bg-[#0E0E0D] animate-pulse"></span>
+          <span className="text-[10px] uppercase tracking-[0.24em] font-normal">
+            AI ATELIER CONCIERGE
+          </span>
+        </button>
+      </div>
 
-      {/* Gallery Lightbox Modal */}
-      <GalleryModal
-        image={selectedGalleryImage}
-        allImages={GALLERY_ITEMS}
-        onClose={() => setSelectedGalleryImage(null)}
-        onSelectImage={(img) => setSelectedGalleryImage(img)}
+      {/* Interactive AI Concierge & VIP Onboarding Modal */}
+      <AIConciergeModal
+        isOpen={isConciergeOpen}
+        onClose={() => setIsConciergeOpen(false)}
       />
 
     </div>
