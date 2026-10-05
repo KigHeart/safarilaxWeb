@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 
 interface FooterProps {
   onNavigate: (sectionId: string) => void;
@@ -62,20 +62,40 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenEnquiry }) => 
         </div>
       </div>
 
-      {/* Brand Palette Bar (Signature line from client document) */}
-      <div className="border-t border-white/5 py-6 px-6">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-[9.5px] tracking-[0.22em] text-[#B8B3AA] uppercase font-light text-center">
-          <div className="flex items-center gap-2">
-            <span>NEAR BLACK #0E0E0D</span>
+      {/* Contacts, Accreditation & Signature */}
+      <div className="border-t border-white/10 py-8 px-6">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-[10.5px] tracking-[0.22em] text-[#B8B3AA] uppercase font-light text-center md:text-left">
+          <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-5 gap-y-2">
+            <a 
+              href="mailto:bookings@safarilax.world" 
+              className="hover:text-[#F7F4EC] transition-colors"
+            >
+              bookings@safarilax.world
+            </a>
             <span>·</span>
-            <span>IVORY #F7F4EC</span>
+            <a 
+              href="mailto:info@safarilax.world" 
+              className="hover:text-[#F7F4EC] transition-colors"
+            >
+              info@safarilax.world
+            </a>
             <span>·</span>
-            <span>SMOKE GREY #B8B3AA</span>
-            <span>·</span>
-            <span>BONE #E6E0D4</span>
+            <a 
+              href="tel:+254700892400" 
+              className="hover:text-[#F7F4EC] transition-colors"
+            >
+              +254 (0) 700 892 400
+            </a>
+            <span className="hidden lg:inline">·</span>
+            <span className="hidden lg:inline text-[#B8B3AA]/70">Nairobi, Kenya</span>
           </div>
-          <div>
-            © {new Date().getFullYear()} SAFARI LAX · NAIROBI, KENYA
+
+          <div className="flex flex-col sm:flex-row items-center gap-3 text-[#B8B3AA]/80">
+            <span>© 2026 SAFARI LAX</span>
+            <span className="hidden sm:inline">·</span>
+            <span className="text-[#F7F4EC] tracking-[0.25em] font-medium">
+              DESIGNED BY KIPROP ARAP YEGO
+            </span>
           </div>
         </div>
       </div>
